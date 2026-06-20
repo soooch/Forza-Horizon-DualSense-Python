@@ -13,7 +13,7 @@ persist across launches; in dev/zuv it sits under ROOT.
 import sys
 from pathlib import Path
 
-# ROOT: package root containing main.py + bundled assets (icons, lang, pyproject).
+# ROOT: package root containing main.py + bundled assets (icons, lang).
 ROOT = Path(__file__).resolve().parent.parent.parent
 
 # DATA: writable user data dir (user_preferences.json, crash.log, ...).
@@ -25,7 +25,6 @@ else:
     DATA = ROOT / "data"
 
 # Read-only bundled assets.
-PYPROJECT = ROOT / "pyproject.toml"
 LANG = ROOT / "lang"
 ICON_ICO = ROOT / "data" / "icon.ico"
 ICON_PNG = ROOT / "data" / "icon.png"

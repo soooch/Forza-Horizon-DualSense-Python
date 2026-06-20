@@ -24,7 +24,6 @@ log = logging.getLogger("fhds")
 
 _DATA = paths.DATA
 PATH = _DATA / "user_preferences.json"
-PYPROJECT = paths.PYPROJECT
 DEFAULT_PROFILE_NAME = "Default"
 
 # System fields — shared across profiles and preserved across launches.
@@ -55,11 +54,12 @@ class PreferencesError(Exception):
 
 
 def _version() -> str:
+    from importlib.metadata import PackageNotFoundError, version
     try:
-        m = re.search(r'(?m)^\s*version\s*=\s*"([^"]+)"', PYPROJECT.read_text(encoding="utf-8"))
-        return m.group(1) if m else ""
-    except OSError:
-        return ""
+        return version("fhds")
+    except PackageNotFoundError:
+        from fhds import __version__  # frozen exe / no installed dist metadata
+        return __version__
 
 
 def _fields(s) -> dict:

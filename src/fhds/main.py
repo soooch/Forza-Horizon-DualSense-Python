@@ -4,9 +4,6 @@ import os
 import sys
 import traceback
 from datetime import datetime
-from dotenv import load_dotenv
-load_dotenv("./dev.env")
-
 
 from fhds.modules import forzahorizon, make_backend, setup_logging, loop
 from fhds.modules.config import paths, preferences, Settings
@@ -69,7 +66,12 @@ def _confirm(prompt: str) -> bool:
 
 
 # MARK: Entry point
-if __name__ == "__main__":
+def main():
+    # Dev convenience: load ./dev.env if present. Done here, not at import time,
+    # so the installed tool performs no cwd-relative file I/O on import.
+    from dotenv import load_dotenv
+    load_dotenv("./dev.env")
+
     p = argparse.ArgumentParser(description="FH DualSense adaptive triggers (Steam keeps rumble)")
     p.add_argument("--host", default="127.0.0.1", help="UDP bind address")
     p.add_argument("--port", type=int, default=None, help="UDP port")
@@ -112,3 +114,7 @@ if __name__ == "__main__":
             run_gui(settings)
     except KeyboardInterrupt:
         print("\nInterrupted.", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()
