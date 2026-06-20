@@ -32,8 +32,8 @@ bad-function-definition = false
 no-matching-overload = false
 
 [tool.zuv]
-entry = "main.py"
-volume = "data"
+entry = "fhds/main.py"
+volume = "fhds/data"
 
 [tool.ruff]
 line-length = 120

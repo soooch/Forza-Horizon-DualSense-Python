@@ -4,7 +4,7 @@ import tkinter as tk
 
 import customtkinter as ctk
 
-from lang import t
+from fhds.lang import t
 
 from . import theme as T
 from . import widgets as W

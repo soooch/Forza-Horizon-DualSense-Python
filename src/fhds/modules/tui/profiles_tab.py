@@ -5,8 +5,8 @@ from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical
 from textual.widgets import Button, Input, Label, ListItem, ListView, Static
 
-from lang import t
-from modules.config import preferences, profiles
+from fhds.lang import t
+from fhds.modules.config import preferences, profiles
 
 log = logging.getLogger("fhds")
 

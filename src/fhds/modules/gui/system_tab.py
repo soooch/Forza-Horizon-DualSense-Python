@@ -6,9 +6,9 @@ from pathlib import Path
 
 import customtkinter as ctk
 
-from lang import t
-from modules.config import preferences
-from modules.dualsense.main import _enumerate_dualsenses, _is_bluetooth, identify_pulse
+from fhds.lang import t
+from fhds.modules.config import preferences
+from fhds.modules.dualsense.main import _enumerate_dualsenses, _is_bluetooth, identify_pulse
 
 from . import theme as T
 from . import widgets as W

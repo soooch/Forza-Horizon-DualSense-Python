@@ -4,8 +4,8 @@ import tkinter as tk
 
 import customtkinter as ctk
 
-from lang import t
-from modules.config import preferences, profiles
+from fhds.lang import t
+from fhds.modules.config import preferences, profiles
 
 from . import theme as T
 from . import widgets as W

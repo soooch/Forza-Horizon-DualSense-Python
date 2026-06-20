@@ -16,9 +16,9 @@ from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical
 from textual.widgets import Button, Label, RadioButton, RadioSet, Switch
 
-from lang import t
-from modules.config import preferences
-from modules.dualsense.main import _enumerate_dualsenses, _is_bluetooth, identify_pulse
+from fhds.lang import t
+from fhds.modules.config import preferences
+from fhds.modules.dualsense.main import _enumerate_dualsenses, _is_bluetooth, identify_pulse
 
 from .settings_tab import SYSTEM_SECTIONS, SettingsTab
 

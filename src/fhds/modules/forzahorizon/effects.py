@@ -6,7 +6,7 @@
 """
 import time
 
-from modules.dualsense.adaptive_trigger import (
+from fhds.modules.dualsense.adaptive_trigger import (
     RAW_MAX, off, rigid, vibrate, vibrate_zones, rigid_zones,
 )
 

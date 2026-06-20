@@ -8,11 +8,11 @@ from textual.app import App, ComposeResult
 from textual.containers import Horizontal
 from textual.widgets import Button, Header, Input, Static, Switch, TabbedContent, TabPane
 
-from lang import set_language, t
-from modules import loop, forzahorizon, make_backend
-from modules.config import preferences, profiles
-from modules.dualsense.adaptive_trigger import off, vibrate
-from modules.config.preferences import _version
+from fhds.lang import set_language, t
+from fhds.modules import loop, forzahorizon, make_backend
+from fhds.modules.config import preferences, profiles
+from fhds.modules.dualsense.adaptive_trigger import off, vibrate
+from fhds.modules.config.preferences import _version
 
 from .controls_tab import ControlsTab
 from .lang_tab import LangTab

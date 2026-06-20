@@ -8,8 +8,8 @@ from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.widgets import Label, ListItem, ListView, Static
 
-from lang import available, set_language, t
-from modules.config import preferences
+from fhds.lang import available, set_language, t
+from fhds.modules.config import preferences
 
 log = logging.getLogger("fhds")
 

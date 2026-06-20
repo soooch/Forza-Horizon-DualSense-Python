@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 load_dotenv("./dev.env")
 
 
-from modules import forzahorizon, make_backend, setup_logging, loop
-from modules.config import paths, preferences, Settings
+from fhds.modules import forzahorizon, make_backend, setup_logging, loop
+from fhds.modules.config import paths, preferences, Settings
 
 log = logging.getLogger("fhds")
 
@@ -52,12 +52,12 @@ def run(s: Settings) -> None:
 
 
 def run_tui(s: Settings) -> None:
-    from modules.tui import TriggerTUI
+    from fhds.modules.tui import TriggerTUI
     TriggerTUI(s).run()
 
 
 def run_gui(s: Settings) -> None:
-    from modules.gui import TriggerGUI
+    from fhds.modules.gui import TriggerGUI
     TriggerGUI(s).run()
 
 

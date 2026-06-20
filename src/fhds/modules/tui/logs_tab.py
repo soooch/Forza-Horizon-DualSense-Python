@@ -5,7 +5,7 @@ from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical
 from textual.widgets import Label, Log, Static
 
-from lang import t
+from fhds.lang import t
 
 log = logging.getLogger("fhds")
 

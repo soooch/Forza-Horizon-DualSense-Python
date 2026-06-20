@@ -26,11 +26,11 @@ import webbrowser
 
 import customtkinter as ctk
 
-from lang import set_language, t
-from modules import forzahorizon, loop, make_backend
-from modules.config import preferences, profiles
-from modules.config.preferences import _version
-from modules.dualsense.adaptive_trigger import off, vibrate
+from fhds.lang import set_language, t
+from fhds.modules import forzahorizon, loop, make_backend
+from fhds.modules.config import preferences, profiles
+from fhds.modules.config.preferences import _version
+from fhds.modules.dualsense.adaptive_trigger import off, vibrate
 
 from . import theme as T
 from . import widgets as W
@@ -189,7 +189,7 @@ class TriggerGUI:
         top.after(ms, top.destroy)
 
     def _set_window_icon(self):
-        from modules.config import paths
+        from fhds.modules.config import paths
         ico = paths.ICON_ICO
         png = paths.ICON_PNG
         # iconphoto with a large PNG gives Windows a high-DPI source it can

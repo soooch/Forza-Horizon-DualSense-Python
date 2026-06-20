@@ -2,8 +2,8 @@
 import logging
 import time
 
-from modules import dualsense, forzahorizon
-from modules.forzahorizon import ProcessWatcher
+from fhds.modules import dualsense, forzahorizon
+from fhds.modules.forzahorizon import ProcessWatcher
 
 log = logging.getLogger("fhds")
 

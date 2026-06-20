@@ -13,7 +13,7 @@ from typing import Callable, Optional
 
 import tkinter as tk
 
-from modules.config import paths
+from fhds.modules.config import paths
 
 log = logging.getLogger("fhds")
 

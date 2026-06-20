@@ -1,0 +1,1 @@
+"""FH DualSense — packaged application."""

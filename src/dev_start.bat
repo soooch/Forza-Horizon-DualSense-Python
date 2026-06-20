@@ -1,5 +1,5 @@
 @echo off
-REM FH DualSense - dev launcher (Windows). Runs main.py from source.
+REM FH DualSense - dev launcher (Windows). Runs the fhds package from source.
 setlocal
 
 cd /d "%~dp0"
@@ -10,6 +10,6 @@ if errorlevel 1 (
     pause & exit /b 1
 )
 
-uv run main.py %*
+uv run python -m fhds.main %*
 endlocal
 exit /b %ERRORLEVEL%

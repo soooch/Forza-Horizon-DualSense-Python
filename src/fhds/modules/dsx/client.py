@@ -13,7 +13,7 @@ import socket
 import threading
 import time
 
-from modules.dualsense.adaptive_trigger import off, rigid
+from fhds.modules.dualsense.adaptive_trigger import off, rigid
 
 from . import dsx_wrapper as tm
 

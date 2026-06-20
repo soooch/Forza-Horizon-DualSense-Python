@@ -15,10 +15,9 @@ from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 SRC = Path(SPECPATH).resolve().parents[1] / "src"
 
 datas = [
-    (str(SRC / "data" / "icon.ico"), "data"),
-    (str(SRC / "data" / "icon.png"), "data"),
-    (str(SRC / "pyproject.toml"), "."),
-    (str(SRC / "lang"), "lang"),
+    (str(SRC / "fhds" / "data" / "icon.ico"), "fhds/data"),
+    (str(SRC / "fhds" / "data" / "icon.png"), "fhds/data"),
+    (str(SRC / "fhds" / "lang"), "fhds/lang"),
 ]
 datas += collect_data_files("customtkinter")
 datas += collect_data_files("textual")
@@ -30,7 +29,7 @@ hiddenimports += collect_submodules("pystray")
 hiddenimports += ["PIL.Image", "PIL.ImageDraw"]
 
 a = Analysis(
-    [str(SRC / "main.py")],
+    [str(SRC / "fhds" / "main.py")],
     pathex=[str(SRC)],
     binaries=[],
     datas=datas,

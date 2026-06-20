@@ -171,7 +171,7 @@ def _preview():
     except ImportError:
         import os, sys
         sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-        from modules.dualsense.main import DualSense
+        from fhds.modules.dualsense.main import DualSense
     ds = DualSense(enable_startup_pulse=False)
     ds.open()
     print("Waiting for DualSense...")

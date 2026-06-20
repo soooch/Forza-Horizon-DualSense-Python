@@ -3,8 +3,8 @@ import logging
 
 import customtkinter as ctk
 
-from lang import t
-from modules.config import preferences
+from fhds.lang import t
+from fhds.modules.config import preferences
 
 from . import theme as T
 from . import widgets as W

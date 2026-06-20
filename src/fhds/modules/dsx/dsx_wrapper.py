@@ -33,7 +33,7 @@ https://github.com/Paliverse/DSX/tree/main/Mod%20System%20(DSX%20v3)
 """
 import logging
 
-from modules.dualsense.adaptive_trigger import (
+from fhds.modules.dualsense.adaptive_trigger import (
     M_OFF, M_RIGID, M_RIGID_ZONES, M_VIBRATE, M_VIBRATE_ZONES,
 )
 

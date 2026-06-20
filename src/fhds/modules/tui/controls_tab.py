@@ -5,8 +5,8 @@ from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.widgets import Label, Switch
 
-from lang import t
-from modules.config import preferences
+from fhds.lang import t
+from fhds.modules.config import preferences
 
 log = logging.getLogger("fhds")
 
