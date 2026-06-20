@@ -103,9 +103,6 @@ class Settings:
     # USB and BT report different serials for the same controller.
     controller_lock_serial: str = ""
 
-    # MARK: System - updates
-    check_for_updates: bool = False           # ZUV loader checks GitHub for a new release at launch
-
     # MARK: System - DSX
     # When on, triggers go to DualSenseX over UDP instead of HID. Lets DSX (Steam)
     # own the controller without HID fighting it. Toggling restarts the backend.

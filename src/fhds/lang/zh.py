@@ -119,14 +119,6 @@ STRINGS = {
     "attached now": "当前已连接",
     "(no serial - not selectable)": "（无序列号 - 无法选择）",
 
-    # --- system tab updates block ---
-    "Updates": "更新",
-    "Check for updates at launch": "启动时检查更新",
-    "When off, ZUV will not prompt for updates on startup. Toggle on and restart the app to check for a new release.":
-        "关闭时，ZUV 不会在启动时提示更新。开启并重启应用以检查新版本。",
-    "ZUV not found: this build is not running inside a ZUV bundle (ZUV_CACHE_ROOT env var is missing), so the update toggle has nothing to control. Run the bundled .zuv.py to manage updates.":
-        "未找到 ZUV：此版本未在 ZUV 包内运行（缺少 ZUV_CACHE_ROOT 环境变量），因此更新开关无可控制对象。请运行打包的 .zuv.py 来管理更新。",
-
     # --- profiles tab ---
     "Load": "加载",
     "Rename": "重命名",

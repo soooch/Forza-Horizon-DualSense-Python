@@ -121,19 +121,6 @@ STRINGS = {
     "attached now": "подключён сейчас",
     "(no serial - not selectable)": "(нет серийного номера — нельзя выбрать)",
 
-    # --- вкладка «Система» — блок обновлений ---
-    "Updates": "Обновления",
-    "Check for updates at launch": "Проверять обновления при запуске",
-    "When off, ZUV will not prompt for updates on startup. Toggle on and restart the app to check for a new release.": (
-        "Если выключено, ZUV не будет предлагать обновления при запуске. "
-        "Включите и перезапустите приложение, чтобы проверить новую версию."
-    ),
-    "ZUV not found: this build is not running inside a ZUV bundle (ZUV_CACHE_ROOT env var is missing), so the update toggle has nothing to control. Run the bundled .zuv.py to manage updates.": (
-        "ZUV не найден: эта сборка запущена не внутри ZUV-пакета "
-        "(переменная окружения ZUV_CACHE_ROOT отсутствует), поэтому переключателю "
-        "обновлений нечем управлять. Запустите .zuv.py из поставки для управления обновлениями."
-    ),
-
     # --- вкладка «Профили» ---
     "Load": "Загрузить",
     "Rename": "Переименовать",

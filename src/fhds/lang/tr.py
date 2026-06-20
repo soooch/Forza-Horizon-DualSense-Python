@@ -119,14 +119,6 @@ STRINGS = {
     "attached now": "şu an bağlı",
     "(no serial - not selectable)": "(seri yok - seçilemez)",
 
-    # --- system tab updates block ---
-    "Updates": "Güncellemeler",
-    "Check for updates at launch": "Açılışta güncellemeleri denetle",
-    "When off, ZUV will not prompt for updates on startup. Toggle on and restart the app to check for a new release.":
-        "Kapalıyken ZUV açılışta güncelleme sormaz. Yeni sürümü denetlemek için açın ve uygulamayı yeniden başlatın.",
-    "ZUV not found: this build is not running inside a ZUV bundle (ZUV_CACHE_ROOT env var is missing), so the update toggle has nothing to control. Run the bundled .zuv.py to manage updates.":
-        "ZUV bulunamadı: bu sürüm bir ZUV paketi içinde çalışmıyor (ZUV_CACHE_ROOT ortam değişkeni eksik), bu yüzden güncelleme anahtarının denetleyeceği bir şey yok. Güncellemeleri yönetmek için paketlenmiş .zuv.py dosyasını çalıştırın.",
-
     # --- profiles tab ---
     "Load": "Yükle",
     "Rename": "Yeniden adlandır",

@@ -12,20 +12,15 @@ so Steam Input still handles rumble.
 
 - Python `>=3.13`, `uv` for deps.
 - Deps: `hidapi`, `textual`, `psutil`.
-- Distributed as a single self-contained file (`fhds.zuv.py`) via [`zuv`](https://github.com/HamzaYslmn/zuv).
+- Distributed as a `uv tool install` package (an `fhds` command on PATH).
 - Windows + Linux. No tests.
 
 ## Layout
 
-One-liner:
-```powershell
-uvx zuv build src -o app/fhds.zuv.py --update-repo HamzaYslmn/Forza-Horizon-DualSense-Python
 ```
-
-```
-src/
-  main.py                    # entry: IS_ZUV check, args, TUI/headless boot
-  pyproject.toml             # version, deps, [tool.zuv] entry+volume
+pyproject.toml               # version, deps, build/packaging config (repo root)
+src/fhds/                    # the importable package
+  main.py                    # entry: args, GUI/TUI/headless boot
   lang/                      # i18n: one module per language (en/tr/zh/ja), auto-discovered
   modules/
     settings.py              # @dataclass Settings - ALL tunables live here
@@ -42,9 +37,7 @@ src/
     tui/                     # Textual app (controls/profiles/settings/system/lang/logs)
     emulation/               # optional fake telemetry for offline dev
     exit_detection/          # watches game proc, closes when it exits
-win_start.bat / linux_start.sh   # launchers (auto-download bundle + run uv)
-app/fhds.zuv.py              # the actual bundle users run
-.github/workflows/release.yml    # CI: build bundle, publish release
+.github/workflows/release.yml    # CI: build wheel + sdist, publish release
 ```
 
 ## Data flow (one frame)
@@ -63,31 +56,20 @@ Trigger command = `(mode, p1, p2)`:
 
 ## Run
 
-### Dev (no bundle)
+### Dev
 ```powershell
-cd src
 uv sync
-uv run main.py
+uv run python -m fhds.main
 ```
 
-### Build the bundle locally (same as CI)
-
-One-liner:
+### Install as a tool
 ```powershell
-uvx zuv build src -o app/fhds.zuv.py --update-repo HamzaYslmn/Forza-Horizon-DualSense-Python
+uv tool install .
+fhds
 ```
 
-Drop `--update-repo` if you don't want the bundle to self-update from GitHub
-on next launch (useful while iterating locally).
-
-Bump the version first by editing `version = "X.Y.Z"` in `src/pyproject.toml`.
-
-### Run the bundle
-```powershell
-.\win_start.bat
-```
-Launcher auto-downloads `app/fhds.zuv.py` if missing, installs `uv` if missing,
-then `uv run`s the bundle.
+Version is the single source of truth in `src/fhds/__init__.py` (`__version__`);
+`pyproject.toml` reads it dynamically.
 
 ### In-game (once)
 Forza Horizon -> **Settings -> HUD and Gameplay -> Data Out: ON**, IP `127.0.0.1`,
@@ -100,11 +82,6 @@ Port `5300`.
 - Push to `main` with `release vX.Y.Z` in commit msg -> stable `vX.Y.Z`.
 - Push tag `v*.*.*` -> stable release.
 - `workflow_dispatch` -> prerelease at the next patch (same rule as above).
-
-## Env vars
-
-- `IS_ZUV=true` - set automatically by the zuv loader when running the bundle.
-  Used by the System tab to locate the ZUV cache root for the update sentinel.
 
 ## Conventions
 
@@ -129,13 +106,12 @@ HidHide cloaking the device mid-session doesn't tear our handle down.
 
 | Want to... | Open this |
 |---|---|
-| Change a tunable / disable an effect | `src/modules/settings.py` |
-| Change how an effect feels | `src/modules/dualsense/adaptive_trigger.py` (primitive) or `src/modules/forzahorizon/effects.py` (game logic) |
-| Touch raw HID bytes | `src/modules/dualsense/main.py` |
-| Add a telemetry field | `src/modules/forzahorizon/udp_listener.py` |
-| Change CLI / startup wiring | `src/main.py` |
-| Change persistence layout | `src/modules/preferences.py` |
-| Edit the TUI | `src/modules/tui/` |
-| Add/translate a UI language | `src/lang/` (drop a `<code>.py` with `NAME` + `STRINGS`) |
-| Change launcher behavior | `win_start.bat` / `linux_start.sh` |
+| Change a tunable / disable an effect | `src/fhds/modules/settings.py` |
+| Change how an effect feels | `src/fhds/modules/dualsense/adaptive_trigger.py` (primitive) or `src/fhds/modules/forzahorizon/effects.py` (game logic) |
+| Touch raw HID bytes | `src/fhds/modules/dualsense/main.py` |
+| Add a telemetry field | `src/fhds/modules/forzahorizon/udp_listener.py` |
+| Change CLI / startup wiring | `src/fhds/main.py` |
+| Change persistence layout | `src/fhds/modules/preferences.py` |
+| Edit the TUI | `src/fhds/modules/tui/` |
+| Add/translate a UI language | `src/fhds/lang/` (drop a `<code>.py` with `NAME` + `STRINGS`) |
 | Change CI gating | `.github/workflows/release.yml` |

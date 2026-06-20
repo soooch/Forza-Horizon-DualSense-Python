@@ -28,9 +28,8 @@ _active: str = DEFAULT_LANG
 
 def _discover() -> None:
     """Glob `<code>.py` files in this package and load each catalog.
-    Works in source, in the zuv-extracted bundle, and in PyInstaller when the
-    `lang/` folder is shipped as data (so __file__ resolves next to the .py
-    catalogs)."""
+    The `lang/` folder ships inside the `fhds` package, so __file__ always
+    resolves next to the .py catalogs whether running from source or installed."""
     _catalogs.clear()
     _names.clear()
     folder = Path(__file__).resolve().parent

@@ -119,14 +119,6 @@ STRINGS = {
     "attached now": "現在接続中",
     "(no serial - not selectable)": "（シリアルなし - 選択不可）",
 
-    # --- system tab updates block ---
-    "Updates": "アップデート",
-    "Check for updates at launch": "起動時に更新を確認",
-    "When off, ZUV will not prompt for updates on startup. Toggle on and restart the app to check for a new release.":
-        "オフの場合、ZUV は起動時に更新を確認しません。新しいリリースを確認するにはオンにしてアプリを再起動してください。",
-    "ZUV not found: this build is not running inside a ZUV bundle (ZUV_CACHE_ROOT env var is missing), so the update toggle has nothing to control. Run the bundled .zuv.py to manage updates.":
-        "ZUV が見つかりません: このビルドは ZUV バンドル内で実行されていません（ZUV_CACHE_ROOT 環境変数がありません）。更新トグルが制御する対象がないため、更新を管理するにはバンドルされた .zuv.py を実行してください。",
-
     # --- profiles tab ---
     "Load": "読み込み",
     "Rename": "名前変更",

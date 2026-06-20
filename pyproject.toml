@@ -11,7 +11,6 @@ dependencies = [
     "platformdirs>=4.0.0",
     "psutil>=7.2.2",
     "pystray>=0.19.5",
-    "python-dotenv>=1.0.0",
     "rich>=13.0.0",
     "textual>=8.2.5",
     "PyGObject>=3.42.0; sys_platform == 'linux'",
@@ -32,14 +31,8 @@ missing-attribute = false
 bad-function-definition = false
 no-matching-overload = false
 
-[tool.zuv]
-entry = "fhds/main.py"
-volume = "fhds/data"
-
 [tool.ruff]
 line-length = 120
-
-[tool.uv.sources]
 
 [project.scripts]
 fhds = "fhds.main:main"

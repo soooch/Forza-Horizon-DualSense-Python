@@ -1,6 +1,5 @@
 import argparse
 import logging
-import os
 import sys
 import traceback
 from datetime import datetime
@@ -26,11 +25,6 @@ def _excepthook(exc_type, exc, tb):
     except OSError:
         pass
     log.critical("Unhandled exception", exc_info=(exc_type, exc, tb))
-
-
-def _log_zuv_status() -> None:
-    found = os.environ.get("IS_ZUV", "").lower() == "true"
-    print(f"ZUV: {'detected' if found else 'not detected'}", file=sys.stderr, flush=True)
 
 
 def run(s: Settings) -> None:
@@ -67,18 +61,13 @@ def _confirm(prompt: str) -> bool:
 
 # MARK: Entry point
 def main():
-    # Dev convenience: load ./dev.env if present. Done here, not at import time,
-    # so the installed tool performs no cwd-relative file I/O on import.
-    from dotenv import load_dotenv
-    load_dotenv("./dev.env")
-
     p = argparse.ArgumentParser(description="FH DualSense adaptive triggers (Steam keeps rumble)")
     p.add_argument("--host", default="127.0.0.1", help="UDP bind address")
     p.add_argument("--port", type=int, default=None, help="UDP port")
     p.add_argument("--debug", action="store_true", help="Verbose per-packet logs")
     p.add_argument("--headless", action="store_true", help="Disable UI, use console logs")
     p.add_argument("--gui", action="store_true", help="Use the CustomTkinter GUI instead of the TUI")
-    p.add_argument("--tui", action="store_true", help="Force the Textual TUI (overrides UI env var)")
+    p.add_argument("--tui", action="store_true", help="Force the Textual TUI instead of the GUI")
     args = p.parse_args()
 
     settings = Settings()
@@ -98,8 +87,6 @@ def main():
 
     sys.excepthook = _excepthook
 
-    _log_zuv_status()
-
     try:
         if args.headless:
             setup_logging(args.debug)
@@ -107,8 +94,6 @@ def main():
         elif args.tui:
             run_tui(settings)
         elif args.gui:
-            run_gui(settings)
-        elif getattr(sys, "frozen", False):
             run_gui(settings)
         else:
             run_gui(settings)

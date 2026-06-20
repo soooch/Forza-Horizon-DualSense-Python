@@ -1,8 +1,6 @@
-"""System tab: extends SettingsTab with controller selection + update toggle."""
+"""System tab: extends SettingsTab with controller selection."""
 import logging
-import os
 import threading
-from pathlib import Path
 
 import customtkinter as ctk
 
@@ -16,54 +14,33 @@ from .settings_tab import SYSTEM_SECTIONS, SettingsTab
 
 log = logging.getLogger("fhds")
 
-SENTINEL = ".zuv-update-disabled"
-
-
-def sentinel_path() -> Path | None:
-    root = os.environ.get("ZUV_CACHE_ROOT")
-    return Path(root) / SENTINEL if root else None
-
-
-def apply_sentinel(enabled: bool) -> None:
-    path = sentinel_path()
-    if path is None:
-        return
-    try:
-        if enabled:
-            path.unlink(missing_ok=True)
-        else:
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.touch(exist_ok=True)
-    except OSError as e:
-        log.warning("Could not update %s: %s", SENTINEL, e)
-
 
 class SystemTab(SettingsTab):
     SECTIONS = SYSTEM_SECTIONS
     SHOW_RESET = False
     PAGE_TITLE = "System"
-    PAGE_SUBTITLE = "Controller, updates, and app-level options."
+    PAGE_SUBTITLE = "Controller and app-level options."
 
     def __init__(self, parent, app):
         self._devices: list[dict] = []
         self._lock_var: ctk.StringVar | None = None
         self._radio_holder: "W.FastScroll | None" = None
         self._radio_buttons: list[ctk.CTkRadioButton] = []
-        self._update_switch: ctk.CTkSwitch | None = None
         self._controller_card: "W.Card | None" = None
         self._dsx_note: "W.Hint | None" = None
-        self._updates_card: "W.Card | None" = None
+        self._first_section = None
         super().__init__(parent, app)
-        if sentinel_path() is not None:
-            apply_sentinel(self.settings.check_for_updates)
         threading.Thread(target=self._enumerate_async, daemon=True).start()
 
     def _build(self):
         self._build_controller_card()
         self._build_dsx_note()
-        self._build_updates_card()
-        # Standard sections from SYSTEM_SECTIONS
+        # Standard sections from SYSTEM_SECTIONS; remember the first so the
+        # controller card / DSX note stay above them after a re-pack.
+        existing = list(self._scroll.winfo_children())
         super()._build()
+        self._first_section = next(
+            (c for c in self._scroll.winfo_children() if c not in existing), None)
         # Run after every card exists so the DSX/controller swap can reference them.
         self._sync_controller_visibility()
 
@@ -105,39 +82,18 @@ class SystemTab(SettingsTab):
             return
         if self.settings.use_dsx:
             self._controller_card.pack_forget()
-            self._dsx_note.pack(fill="x", padx=T.PAD_MD, pady=(0, T.PAD_MD),
-                                before=self._updates_card)
+            if self._first_section is not None:
+                self._dsx_note.pack(fill="x", padx=T.PAD_MD, pady=(0, T.PAD_MD),
+                                    before=self._first_section)
+            else:
+                self._dsx_note.pack(fill="x", padx=T.PAD_MD, pady=(0, T.PAD_MD))
         else:
             self._dsx_note.pack_forget()
-            self._controller_card.pack(fill="x", pady=(0, T.PAD_MD),
-                                       before=self._updates_card)
-
-    def _build_updates_card(self):
-        card = self._updates_card = W.Card(self._scroll)
-        card.pack(fill="x", pady=(0, T.PAD_MD))
-        W.H2(card, t("Updates")).pack(anchor="w", padx=T.PAD_MD,
-                                      pady=(T.PAD_MD, T.PAD_SM))
-        if sentinel_path() is None:
-            W.Danger(
-                card,
-                t("ZUV not found: this build is not running inside a ZUV bundle "
-                  "(ZUV_CACHE_ROOT env var is missing), so the update toggle has "
-                  "nothing to control. Run the bundled .zuv.py to manage updates."),
-                wrap=self.app.px(640),
-            ).pack(fill="x", padx=T.PAD_MD, pady=(0, T.PAD_MD))
-            return
-        self._update_switch = ctk.CTkSwitch(card,
-                                            text=t("Check for updates at launch"),
-                                            command=self._on_update_toggle)
-        if self.settings.check_for_updates:
-            self._update_switch.select()
-        self._update_switch.pack(anchor="w", padx=T.PAD_MD, pady=(0, T.PAD_XS))
-        W.Hint(
-            card,
-            t("When off, ZUV will not prompt for updates on startup. "
-              "Toggle on and restart the app to check for a new release."),
-            wrap=self.app.px(640),
-        ).pack(fill="x", padx=T.PAD_MD, pady=(0, T.PAD_MD))
+            if self._first_section is not None:
+                self._controller_card.pack(fill="x", pady=(0, T.PAD_MD),
+                                           before=self._first_section)
+            else:
+                self._controller_card.pack(fill="x", pady=(0, T.PAD_MD))
 
     # MARK: controller list -------------------------------------------------
 
@@ -225,32 +181,15 @@ class SystemTab(SettingsTab):
                 ds.force_reconnect()
         threading.Thread(target=self._enumerate_async, daemon=True).start()
 
-    # MARK: updates ---------------------------------------------------------
+    # MARK: dsx visibility --------------------------------------------------
 
     def _on_switch(self, attr: str):
         super()._on_switch(attr)
         if attr == "use_dsx":
             self._sync_controller_visibility()
 
-    def _on_update_toggle(self):
-        if self._update_switch is None:
-            return
-        value = bool(self._update_switch.get())
-        if self.settings.check_for_updates != value:
-            self.settings.check_for_updates = value
-            preferences.save(self.settings)
-            log.info("check_for_updates = %s", value)
-        apply_sentinel(value)
-
     def _refresh_widgets(self):
         super()._refresh_widgets()
-        if self._update_switch is not None:
-            want = bool(self.settings.check_for_updates)
-            if bool(self._update_switch.get()) != want:
-                if want:
-                    self._update_switch.select()
-                else:
-                    self._update_switch.deselect()
         if self._lock_var is not None:
             self._lock_var.set(self.settings.controller_lock_serial or "")
             self._render_radio_buttons()

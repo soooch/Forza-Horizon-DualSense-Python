@@ -76,25 +76,34 @@ That's why you can run both at the same time and neither one breaks the other.
 
 **You need:** Windows 10/11 or Linux, and a DualSense controller (USB or Bluetooth).
 
-1. Go to the [latest release](https://github.com/HamzaYslmn/Forza-Horizon-DualSense-Python/releases/latest).
-2. Download **`win_start.bat`** (Windows) or **`linux_start.sh`** (Linux).
-3. Put it in any empty folder.
-4. **Important:** I highly recommend installing **`uv`** manually first. Open PowerShell and run this command:
-   ```powershell
-   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-   ```
-   - If you skip this, `win_start.bat` will try to install `uv` automatically. However, Windows might block this auto-install with an "Execution Policy" error in PowerShell.
-   - **If you get the Execution Policy error:** Hold **Shift + Right-Click** in the folder, click **"Open PowerShell window here"**, paste `Set-ExecutionPolicy RemoteSigned -scope CurrentUser` and hit Enter, then type `Y` and Enter.
-5. Double-click `win_start.bat` (or `linux_start.sh`).
+### Install as a `uv` tool (easiest)
 
-The launcher handles downloading the app, preparing the environment, and running it. Next time you run it, it will also check for updates.
+This puts an `fhds` command on your PATH:
 
-> [!NOTE]
-> A standalone **Windows `.exe`** is also attached to each release as an experimental option. The **recommended** way to run the app is still **`win_start.bat`** — it self-updates and works the same across every Windows version.
+```powershell
+uv tool install "git+https://github.com/HamzaYslmn/Forza-Horizon-DualSense-Python"
+fhds
+```
 
-> **Linux extras:** install `libhidapi` (`sudo apt install libhidapi-hidraw0` / `sudo pacman -S hidapi` / `sudo dnf install hidapi`) and the udev rule from `app/packaging/linux/70-dualsense.rules`. Then unplug/replug the controller once.
+Pin a specific version by appending `@vX.Y.Z` to the URL, or download the
+`fhds-*.whl` from the [latest release](https://github.com/HamzaYslmn/Forza-Horizon-DualSense-Python/releases/latest)
+and `uv tool install <file>`.
+
+### From source
+
+```powershell
+git clone https://github.com/HamzaYslmn/Forza-Horizon-DualSense-Python
+cd Forza-Horizon-DualSense-Python
+uv run python -m fhds.main
+```
+
+Or `uv tool install .` from the same folder to install the local checkout.
+
+Need `uv`? `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"` (Windows) or see [astral.sh/uv](https://astral.sh/uv/).
+
+> **Linux extras:** install `libhidapi` (`sudo apt install libhidapi-hidraw0` / `sudo pacman -S hidapi` / `sudo dnf install hidapi`) and the udev rule from `packaging/linux/70-dualsense.rules`. Then unplug/replug the controller once.
 >
-> **Wayland tray:** the minimize-to-tray icon needs the appindicator backend (X11 doesn't). Install these so the launcher can build PyGObject into its venv:
+> **Wayland tray:** the minimize-to-tray icon needs the appindicator backend (X11 doesn't). Install these so PyGObject can build into the venv:
 > - Debian/Ubuntu: `sudo apt install build-essential pkg-config python3-dev libcairo2-dev libgirepository-2.0-dev libayatana-appindicator3-1 gir1.2-ayatanaappindicator3-0.1`
 > - Arch: `sudo pacman -S base-devel cairo gobject-introspection libayatana-appindicator`
 > - Fedora: `sudo dnf install gcc pkg-config python3-devel cairo-devel gobject-introspection-devel libayatana-appindicator-gtk3`
@@ -105,7 +114,7 @@ If you are playing the game via the Xbox App or Microsoft Store, you will need a
 
 Because SISR routes the controller through **Steam Input**, Steam can grab the physical DualSense exclusively and prevent this app from connecting. To avoid this, **you must start the programs in this exact order**:
 
-1. **First, launch THIS APP** (`win_start.bat`) and wait for the short pulse on the triggers.
+1. **First, launch THIS APP** and wait for the short pulse on the triggers.
 2. **Second, launch SISR** (and Steam).
 3. **Finally, launch Forza Horizon.**
 
@@ -116,9 +125,9 @@ Because SISR routes the controller through **Steam Input**, Steam can grab the p
 
 ```bash
 git clone https://github.com/HamzaYslmn/Forza-Horizon-DualSense-Python
-cd Forza-Horizon-DualSense-Python/src
+cd Forza-Horizon-DualSense-Python
 uv sync
-uv run main.py
+uv run python -m fhds.main
 ```
 
 Need `uv`? `pip install uv` or [astral.sh/uv](https://astral.sh/uv/).
@@ -172,46 +181,38 @@ This ensures your DualSense firmware is up to date for windows.
 
 ## ▶️ Run it
 
-Double-click **`win_start.bat`** (Windows) or **`linux_start.sh`** (Linux).
+Run **`fhds`** (if installed as a tool) — or from source, `uv run python -m fhds.main`.
 
 You'll feel a short pulse on both triggers — that means it's working. Now launch Forza Horizon and drive.
 
-> Start the launcher **before** Forza Horizon. If you use HidHide, allowlist `python.exe`.
+> Start the app **before** Forza Horizon. If you use HidHide, allowlist `python.exe`.
 
 ---
 
 ## 🎮 Auto-launch with Steam
 
-Want the triggers to turn on automatically when you press **Play**? Tell Steam to run the launcher first.
-> ⚠️ **Warning:** Sometimes auto-launching this way can cause issues with the application. For the most stable experience, it is recommended to launch the app manually by double-clicking the script.
+Want the triggers to turn on automatically when you press **Play**? Tell Steam to run the app first.
+> ⚠️ **Warning:** Sometimes auto-launching this way can cause issues with the application. For the most stable experience, it is recommended to launch the app manually first.
 
 1. In Steam, right-click **Forza Horizon** → **Properties**.
 2. Open the **General** tab and find **Launch Options**.
-3. Choose one of the following commands based on your preference (change the path to where your `win_start.bat` actually is):
+3. Point Steam at the app, then chain the game (`fhds.exe` lives in `%USERPROFILE%\.local\bin` after `uv tool install`):
 
-   * **Option A: Keeping Steam Overlay & Playtime Tracking (Recommended)**
-     This wraps the script in `cmd.exe /c` so Steam can properly monitor the process, keeping your **Steam Overlay (Shift+Tab)** and **Playtime Tracking** fully functional while automatically closing the console window afterwards:
-     ```text
-     "C:\Windows\System32\cmd.exe" /c ""C:\Your\Path\To\Forza-Horizon-DualSense-Python\win_start.bat" %command%"
-     ```
+   ```text
+   cmd /c "start "" "%USERPROFILE%\.local\bin\fhds.exe"" && %command%
+   ```
 
-   * **Option B: Simpler Method**
-     A direct way to launch, though the Steam Overlay and playtime tracking may stop working:
-     ```text
-     "C:\Your\Path\To\Forza-Horizon-DualSense-Python\win_start.bat" %command%
-     ```
-
-That's it. Press **Play** - the launcher runs, then the game opens.
+That's it. Press **Play** - the app runs, then the game opens.
 
 ![Steam launch options](docs/img/steaming.png)
 
 <details>
-<summary>Advanced — run the Python script directly (no BAT file)</summary>
+<summary>Advanced — run from source instead</summary>
 
 If you cloned the repo and use `uv`, paste this into **Launch Options** instead:
 
 ```text
-cmd /c "start /MIN /D C:\Your\Path\To\Forza-Horizon-DualSense-Python\src uv run main.py" && %command%
+cmd /c "start /MIN /D C:\Your\Path\To\Forza-Horizon-DualSense-Python\src uv run python -m fhds.main" && %command%
 ```
 </details>
 
@@ -231,12 +232,11 @@ Every effect (brake force, ABS buzz, gear thump, rev limiter, etc.) can be tweak
 |---------|-----|
 | `DualSense gamepad interface not found` | Controller not connected, or HidHide is hiding it — allowlist `python.exe`. |
 | `No UDP packets yet` | Forza's Data Out is off, IP/port is wrong, Windows Firewall is blocking, or try changing the IP from `127.0.0.1` to `::1`. |
-| Windows Defender / SmartScreen blocks `win_start.bat` | 1. On the blue "Windows protected your PC" screen, click **"More info"**.<br>2. Click the **"Run anyway"** button that appears at the bottom. (The script only downloads required dependencies.) |
 | Triggers feel weak | Raise `brake_max_force` / `throttle_max_force`, or lower the matching `curve`. |
 | Triggers feel like a brick wall | Lower `brake_max_force` / `throttle_max_force`, or raise the matching `curve`. |
 | Triggers feel stiff at a light press | Lower the baseline force, or raise the `curve`. |
 | No vibration on gear shift | Car must be moving faster than 3 km/h and changing between valid gears. |
-| Console window is blank after the startup pulse | Run from a terminal with `cd src && uv run main.py --headless` to skip the TUI. |
+| Console window is blank after the startup pulse | Run from a terminal with `uv run python -m fhds.main --headless` to skip the TUI. |
 
 ---
 

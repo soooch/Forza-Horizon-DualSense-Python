@@ -119,14 +119,6 @@ STRINGS = {
     "attached now": "jetzt verbunden",
     "(no serial - not selectable)": "(keine Seriennummer - nicht auswählbar)",
 
-    # --- system tab updates block ---
-    "Updates": "Updates",
-    "Check for updates at launch": "Beim Start nach Updates suchen",
-    "When off, ZUV will not prompt for updates on startup. Toggle on and restart the app to check for a new release.":
-        "Wenn deaktiviert, fragt ZUV beim Start nicht nach Updates. Aktivieren Sie die Option und starten Sie die App neu, um nach einer neuen Version zu suchen.",
-    "ZUV not found: this build is not running inside a ZUV bundle (ZUV_CACHE_ROOT env var is missing), so the update toggle has nothing to control. Run the bundled .zuv.py to manage updates.":
-        "ZUV nicht gefunden: Dieser Build läuft nicht in einem ZUV-Bundle (Umgebungsvariable ZUV_CACHE_ROOT fehlt), daher steuert der Update-Schalter nichts. Führen Sie die gebündelte .zuv.py aus, um Updates zu verwalten.",
-
     # --- profiles tab ---
     "Load": "Laden",
     "Rename": "Umbenennen",

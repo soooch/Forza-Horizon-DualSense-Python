@@ -38,7 +38,6 @@ GLOBAL_FIELDS = frozenset({
     "startup_pulse_force",
     "exit_on_game_close",
     "game_poll_interval_s",
-    "check_for_updates",
     "language",
     "controller_lock_serial",
     "use_dsx",
@@ -58,7 +57,7 @@ def _version() -> str:
     try:
         return version("fhds")
     except PackageNotFoundError:
-        from fhds import __version__  # frozen exe / no installed dist metadata
+        from fhds import __version__  # running from source / no installed dist metadata
         return __version__
 
 
